@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\eventController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,8 @@ Route::get('/create', [categoryController::class, 'create'])->name('create');
 Route::post('/store', [categoryController::class, 'store'])->name('store');
 Route::post('/edit{id}', [DashboardController::class, 'update'])->name('update');
 Route::delete('/delete/{id}', [categoryController::class, 'destroy'])->name('destroy');
+Route::get('/dashboardevent', [eventController::class, 'index']);
+Route::delete('/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::table('reservation', function (Blueprint $table) {
 
-            $table->foreignId('event_id')->nullable()->constrained('event');
-
+            $table->foreignId('event_id')
+                ->nullable()
+                ->constrained('events') // Assurez-vous que le nom de la table est correct, ici "events"
+                ->onDelete('set null');
         });
     }
 
