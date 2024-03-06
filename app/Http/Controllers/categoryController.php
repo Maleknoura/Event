@@ -13,6 +13,7 @@ class categoryController extends Controller
      */
     public function index()
     {
+       
     }
 
     /**
@@ -60,16 +61,16 @@ class categoryController extends Controller
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-    
+
         $validate = $request->validate([
             'categoryname' => 'required'
         ]);
-    
+
         $category->update([
             'name' => $validate['categoryname']
         ]);
-    
-        return redirect()->back(); 
+
+        return redirect()->back();
     }
 
 
@@ -77,7 +78,7 @@ class categoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-    
+
         return redirect()->back();
     }
 }

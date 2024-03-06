@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\category;
 use App\Models\client;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class adminController extends Controller
@@ -17,7 +18,7 @@ class adminController extends Controller
         // $categoriecount = category::count();
         // $categories = category::all();
 
-    
+
     }
 
 

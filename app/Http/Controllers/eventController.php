@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\eventrequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class eventController extends Controller
 {
@@ -20,16 +22,7 @@ class eventController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
+    public function create(EventRequest $request){
         $validatedData = $request->validate($request->rules());
 
         if($request->hasFile('image')) {
@@ -46,12 +39,12 @@ class eventController extends Controller
             'description' => $validatedData['description'],
             'image' => $imageName,
             'date'=> $validatedData['date'],
-            'capacity' => $validatedData['capacity']
+            'place_available' => $validatedData['place_available']
         ]);
 
         return redirect()->back();
     }
-    
+
 
     /**
      * Display the specified resource.

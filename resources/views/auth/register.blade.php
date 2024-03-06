@@ -37,8 +37,8 @@
         <div class="mt-4">
             <x-input-label for="role" :value="__('Role')" />
             <select id="role" name="role" class="block mt-1 w-full" required>
-                <option value="client">Client</option>
-                <option value="organizer">Organizer</option>
+                <option value="Client">Client</option>
+                <option value="Organizer">Organizer</option>
             </select>
         </div>
         <div class="flex items-center justify-end mt-4">

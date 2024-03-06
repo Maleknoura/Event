@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('organiser', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users');
-            $table->timestamps();
+        Schema::table('events', function (Blueprint $table) {
+            $table->foreignId('organiser_id')->nullable()->constrained('organisers');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('organiser');
+        Schema::table('events', function (Blueprint $table) {
+            //
+        });
     }
 };

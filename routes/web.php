@@ -27,13 +27,19 @@ Route::get('/dashboard', function () {
 
 Route::get('/create', [categoryController::class, 'create'])->name('create');
 Route::post('/store', [categoryController::class, 'store'])->name('store');
-Route::post('/edit{id}', [DashboardController::class, 'update'])->name('update');
-Route::delete('/delete/{id}', [categoryController::class, 'destroy'])->name('destroy');
+Route::post('/edit{id}', [categoryController::class, 'update'])->name('update');
+Route::delete('/delete/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
 Route::get('/dashboardevent', [eventController::class, 'index']);
 Route::delete('/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
+Route::post('/createEvent', [eventController::class, 'create'])->name('createe');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
+Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');;
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+
+
 
 
 Route::middleware('auth')->group(function () {

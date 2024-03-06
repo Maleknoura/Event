@@ -131,3 +131,204 @@
         </div>
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<div x-data="setup()" :class="{ 'dark': isDark }">
+    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white dark:bg-gray-700 text-black dark:text-white">
+
+
+
+        <!-- Sidebar -->
+        @extends('layout')
+
+        <!-- ./Sidebar -->
+
+        <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
+                <div class="bg-red-700 dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-red-700 dark:border-gray-600 text-white font-medium group">
+                    <div class="flex justify-center items-center">
+
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl">{{ $categoriesCount }}</p>
+                        <p> Catégories </p>
+                    </div>
+                </div>
+                <div class="bg-red-700 dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-red-700 dark:border-gray-600 text-white font-medium group">
+                    <div class="flex justify-center items-center">
+
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl">{{ $clientsCount }}</p>
+                        <p>Clients</p>
+                    </div>
+                </div>
+                <div class="bg-red-700 dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-red-700 dark:border-gray-600 text-white font-medium group">
+                    <div class="flex justify-center items-center">
+
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl">{{ $eventsCount }}</p>
+                        <p>Evenements</p>
+                    </div>
+                </div>
+                <div class="bg-red-700 dark:bg-gray-800 shadow-lg rounded-md flex items-center justify-between p-3 border-b-4 border-red-700 dark:border-gray-600 text-white font-medium group">
+                    <div class="flex justify-center items-center">
+
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl">{{ $organizersCount }}</p>
+                        <p>Les Organisateurs</p>
+                    </div>
+                </div>
+                <div class="relative w-full max-w-full flex-grow flex-1 text-right">
+                    <button id="ajouterCategorieBtn" class="bg-gray-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        New Catégorie
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-center align-center  break-words bg-gray-50 dark:bg-gray-800 w-full shadow-lg rounded">
+                <div class="rounded-t mb-0 px-0 border-0">
+                    <div class="flex flex-wrap items-center px-4 py-2">
+                        <div class="relative w-full max-w-full flex-grow flex-1">
+                        </div>
+
+                        <div class="block w-full overflow-x-auto">
+                            <table class="items-center w-full bg-transparent border-collapse">
+                                <thead>
+                                    <tr>
+                                        <th class="px-7  bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Category</th>
+                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">Action</th>
+                                        <th class="px-4 bg-gray-100 dark:bg-gray-600 text-gray-500 dark:text-gray-100 align-middle border border-solid border-gray-200 dark:border-gray-500 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @foreach($cat as $category)
+                                    <tr class="text-gray-700 dark:text-gray-100">
+                                        <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-s whitespace-nowrap p-4 text-left">{{ $category->name }}</th>
+                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-s whitespace-nowrap p-4">
+                                            <form action=method="post">
+                                                @csrf
+                                                <button type=" submit">Edit</button>
+                                            </form>
+                                        </td>
+                                        <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                            <div class="flex items-center">
+                                                <form action="" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit">Supprimer</button>
+                                                </form>
+                                                <div class="relative w-full">
+                                                    <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
+                                                        <div style="width: 70%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                        </div>
+                    </div>
+
+                    <div id="popupAjoutCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
+                        <div class="backdrop-filter backdrop-blur-sm"></div>
+                        <div class="bg-white p-8 rounded shadow-md">
+                            <h2 class="text-2xl font-bold mb-4">Ajouter une catégorie</h2>
+
+
+                            <form action="{{ route('store') }}" method="post">
+                                @csrf
+                                <label for="nomCategorie" class="block text-sm font-medium text-gray-700">Nom de la catégorie:</label>
+                                <input type="text" id="nomCategorie" name="name" class="mt-1 p-2 border rounded-md ">
+
+
+                                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Ajouter
+                                </button>
+                            </form>
+
+                            <button id="fermerPopupBtn" class="mt-4 text-sm text-gray-600 hover:text-gray-800">
+                                Fermer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4">
+
+
+                        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+                        <script>
+                            const setup = () => {
+                                const getTheme = () => {
+                                    if (window.localStorage.getItem('dark')) {
+                                        return JSON.parse(window.localStorage.getItem('dark'))
+                                    }
+                                    return !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+                                }
+
+                                const setTheme = (value) => {
+                                    window.localStorage.setItem('dark', value)
+                                }
+
+                                return {
+                                    loading: true,
+                                    isDark: getTheme(),
+                                    toggleTheme() {
+                                        this.isDark = !this.isDark
+                                        setTheme(this.isDark)
+                                    },
+                                }
+                            }
+                        </script>
+                        <script>
+                            // JavaScript pour gérer l'affichage du popup
+                            const ajouterCategorieBtn = document.getElementById('ajouterCategorieBtn');
+                            const popupAjoutCategorie = document.getElementById('popupAjoutCategorie');
+                            const fermerPopupBtn = document.getElementById('fermerPopupBtn');
+
+                            ajouterCategorieBtn.addEventListener('click', () => {
+                                popupAjoutCategorie.classList.remove('hidden');
+                            });
+
+                            fermerPopupBtn.addEventListener('click', () => {
+                                popupAjoutCategorie.classList.add('hidden');
+                            });
+                        </script>
+                        <script>
+        function openUpdatePopup(categoryId, categoryName) {
+            // Récupérer le formulaire de mise à jour
+            let updateForm = document.getElementById('updateForm');
+
+            // Pré-remplir les champs avec les données actuelles
+            updateForm.elements['category_id'].value = categoryId;
+            updateForm.elements['category_name'].value = categoryName;
+
+            // Afficher le popup
+            document.getElementById('updatePopup').classList.remove('hidden');
+        }
+
+        function closeUpdatePopup() {
+            // Cacher le popup
+            document.getElementById('updatePopup').classList.add('hidden');
+        }
+    </script>
