@@ -163,6 +163,42 @@
     </div>
     </div>
 
+    <div class="mt-8">
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Event</th>
+                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Description</th>
+                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Organiser</th>
+                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Catégorie</th>
+
+                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($event as $events)
+                <tr class="text-gray-700 dark:text-gray-100">
+                    <td class="py-2 px-4 border-b border-gray-300"> {{ $events->name }}</td>
+                    <td class="py-2 px-4 border-b border-gray-300"> {{ $events->description }}</td>
+                    <td class="py-2 px-4 border-b border-gray-300"> test</td>
+                    <td class="py-2 px-4 border-b border-gray-300">test</td>
+
+                    <td class="py-2 px-4 border-b border-gray-200">
+                        <button class="bg-green-400  text-white  text-xs py-1 px-2 rounded">
+                            Accepter
+                        </button>
+
+                        <button class="bg-red-400 text-white  text-xs py-1 px-2 rounded">
+                            Rejeter
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+
     <div id="updatePopup" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden justify-center items-center">
         <div class="bg-white p-8 rounded shadow-md">
             <h2 class="text-2xl font-bold mb-4">Modifier la catégorie</h2>
@@ -248,7 +284,7 @@
         }
     </script>
     <script>
-        function openUpdatePopup(categoryId, categoryName) {
+        function openUpdatePopup() {
             // Récupérer le formulaire de mise à jour
             let updateForm = document.getElementById('updateForm');
 

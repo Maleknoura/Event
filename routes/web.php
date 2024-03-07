@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/dashboard', function () {
@@ -33,7 +33,13 @@ Route::get('/dashboardevent', [eventController::class, 'index']);
 Route::delete('/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
 Route::post('/createEvent', [eventController::class, 'create'])->name('createe');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
-Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');;
+Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');
+Route::get('/',[eventController::class,'view'])->name('home');
+Route::get('/{categorie_id?}',[eventController::class,'view'])->name('home');
+Route::get('/search',[eventController::class,'view'])->name('home');
+
+
+
 
 
 

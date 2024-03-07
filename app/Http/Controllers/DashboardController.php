@@ -23,20 +23,17 @@ class DashboardController extends Controller
         $eventsCount = Event::count();
         $cat = category::all();
         $users = User::all();
-        return view('dashboard', compact('categoriesCount', 'clientsCount', 'organizersCount', 'eventsCount', 'cat', 'users'));
+        $event = Event::all();
+        return view('dashboard', compact('categoriesCount', 'clientsCount', 'organizersCount', 'eventsCount', 'cat', 'users','event'));
     }
 
-    // public function togg(User $user)
-    // {
-    //     if ($user->status === true) {
-    //         return Redirect::back()->withErrors(['error' => 'Unauthorized. User is banned.']);
-    //     }
-
-    //     $user->update(['status' => !$user->status]);
-
-
-    //     return Redirect::back()->with('success', 'User status updated successfully.');
-    // }
+    public function validateEvent(Event $event)
+    {
+        $event->update(['status' => true]);
+    
+        return redirect()->back()->with('success', 'Event validated successfully.');
+    }
+   
 
     public function toggleStatus(Request $request, User $user)
     {
