@@ -70,14 +70,15 @@ class eventController extends Controller
         return redirect()->back();
     }
 
-
+    public function show($id)
+    {
+        $event = Event::findOrFail($id); 
+        return view('singlepage', ['event' => $event]);
+    }
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.

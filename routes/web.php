@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/page', function () {
+    return view('singlepage');
 });
 
 Route::get('/dashboard', function () {
@@ -31,12 +31,15 @@ Route::post('/edit{id}', [categoryController::class, 'update'])->name('update');
 Route::delete('/delete/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
 Route::get('/dashboardevent', [eventController::class, 'index']);
 Route::delete('/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
-Route::post('/createEvent', [eventController::class, 'create'])->name('createe');
+Route::post('/create', [eventController::class, 'create'])->name('createe');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
 Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');
 Route::get('/',[eventController::class,'view'])->name('home');
 Route::get('/{categorie_id?}',[eventController::class,'view'])->name('home');
 Route::get('/search',[eventController::class,'view'])->name('home');
+Route::get('/events/{id}', [eventController::class,'show'])->name('event.show');
+
+
 
 
 
