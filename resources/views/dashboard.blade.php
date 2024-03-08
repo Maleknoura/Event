@@ -92,8 +92,8 @@
                                 <tr class="text-gray-700 dark:text-gray-100">
                                     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{ $category->name }}</th>
                                     <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <button onclick="openUpdatePopup" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                            Modifier la catégorie
+                                        <button id="editerCategorieBtn" class="bg-gray-400 dark:bg-gray-100 text-white active:bg-green-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                                            Modifier
                                         </button>
 
                                     </td>
@@ -168,7 +168,6 @@
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Event</th>
-                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Description</th>
                     <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Organiser</th>
                     <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Catégorie</th>
 
@@ -179,7 +178,6 @@
                 @foreach($event as $events)
                 <tr class="text-gray-700 dark:text-gray-100">
                     <td class="py-2 px-4 border-b border-gray-300"> {{ $events->name }}</td>
-                    <td class="py-2 px-4 border-b border-gray-300"> {{ $events->description }}</td>
                     <td class="py-2 px-4 border-b border-gray-300"> test</td>
                     <td class="py-2 px-4 border-b border-gray-300">test</td>
 
@@ -199,29 +197,7 @@
     </div>
 
 
-    <div id="updatePopup" class="fixed inset-0 bg-gray-700 bg-opacity-50 hidden justify-center items-center">
-        <div class="bg-white p-8 rounded shadow-md">
-            <h2 class="text-2xl font-bold mb-4">Modifier la catégorie</h2>
 
-            <!-- Formulaire de mise à jour -->
-            <form id="updateForm" action="" method="post">
-                @csrf
-                <input type="hidden" name="id" id="category_id">
-                <label for="category_name">Nouveau nom de la catégorie:</label>
-                <input type="text" id="category_name" name="categoryname" class="mt-1 p-2 border rounded-md w-full" required>
-
-                <!-- Bouton de soumission du formulaire (exemple) -->
-                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Mettre à jour
-                </button>
-            </form>
-
-            <!-- Bouton de fermeture du popup -->
-            <button onclick="closeUpdatePopup()" class="mt-4 text-sm text-gray-600 hover:text-gray-800">
-                Fermer
-            </button>
-        </div>
-    </div>
     <div id="popupAjoutCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
         <div class="backdrop-filter backdrop-blur-sm"></div>
         <div class="bg-white p-8 rounded shadow-md">
@@ -244,9 +220,32 @@
             </button>
         </div>
     </div>
+    <div id="popupEditCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div class="backdrop-filter backdrop-blur-sm"></div>
+        <div class="bg-white p-8 rounded shadow-md">
+            <h2 class="text-2xl font-bold mb-4">Modifier une catégorie</h2>
+
+            <form action="{{ route('update', ['id' => $category->id]) }}" method="post">
+                @csrf
+                @method('PUT') 
+
+                <label for="nomCategorieEdit" class="block text-sm font-medium text-gray-700">Nouveau nom de la catégorie:</label>
+                <input type="text" id="nomCategorieEdit" name="categoryname" class="mt-1 p-2 border rounded-md">
+
+                <button onclick="openUpdatePopup('{{ $category->id }}', '{{ $category->name }}')" class="bg-gray-400 dark:bg-gray-100 text-white active:bg-green-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                Modifier
+            </button>
+            </form>
+
+            <button id="fermerPopupEditBtn" class="mt-4 text-sm text-gray-600 hover:text-gray-800">
+                Fermer
+            </button>
+        </div>
+    </div>
+
+
 
     <script>
-        // JavaScript pour gérer l'affichage du popup
         const ajouterCategorieBtn = document.getElementById('ajouterCategorieBtn');
         const popupAjoutCategorie = document.getElementById('popupAjoutCategorie');
         const fermerPopupBtn = document.getElementById('fermerPopupBtn');
@@ -283,24 +282,35 @@
             }
         }
     </script>
-    <script>
-        function openUpdatePopup() {
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fonction pour ouvrir le popup de mise à jour
+        function openUpdatePopup(categoryId, categoryname) {
             // Récupérer le formulaire de mise à jour
             let updateForm = document.getElementById('updateForm');
 
             // Pré-remplir les champs avec les données actuelles
             updateForm.elements['category_id'].value = categoryId;
-            updateForm.elements['category_name'].value = categoryName;
+            updateForm.elements['categoryname'].value = categoryname;
 
-            // Afficher le popup
-            document.getElementById('updatePopup').classList.remove('hidden');
+            // Afficher le popup de mise à jour
+            document.getElementById('popupEditCategorie').classList.remove('hidden');
         }
 
-        function closeUpdatePopup() {
-            // Cacher le popup
-            document.getElementById('updatePopup').classList.add('hidden');
-        }
-    </script>
+        // Ajouter cet événement sur les boutons de modification
+        document.querySelectorAll('#editerCategorieBtn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                // Récupérer les données de la ligne de catégorie associée
+                let categoryId = btn.getAttribute('data-category-id');
+                let categoryname = btn.getAttribute('data-category-name');
+
+                // Appeler la fonction pour ouvrir le popup de mise à jour
+                openUpdatePopup(categoryId, categoryname);
+            });
+        });
+    });
+</script>
+
 
 </body>
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -332,3 +332,43 @@
             document.getElementById('updatePopup').classList.add('hidden');
         }
     </script>
+
+
+
+
+Route::get('/dashboard/create', [categoryController::class, 'create'])->name('create');
+Route::post('/dashboard/store', [categoryController::class, 'store'])->name('store');
+<!-- Route::get('/dashboard/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('/dashboard/edit{id}', [categoryController::class, 'update'])->name('update');
+
+
+
+Route::delete('/delete/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
+Route::get('/dashboardevent', [eventController::class, 'index']);
+Route::delete('/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
+Route::post('/create', [eventController::class, 'create'])->name('createe');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
+Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update'); --> -->
+
+
+
+
+Route::post('/events/{id}/store/{clientId}', [ReservationController::class, 'store'])->name('reservation.store');
+public function store($eventId, $clientId)
+    {
+
+        $event = Event::findOrFail($eventId);
+
+        Reservation::create([
+            'status' => 'Booked',
+            'event_id' => $event->id,
+            'client_id' => $clientId,
+
+        ]);
+        dd($clientId);
+        return redirect()->route('home');
+    }
+    public function index()
+    {
+        return view('singlepage');
+    }

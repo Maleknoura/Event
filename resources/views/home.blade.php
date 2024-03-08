@@ -95,7 +95,7 @@
         <div class="flex items-center">
 
 
-            <form action="{{ route('home') }}" method="GET">
+            <form action="{{ route('home.search') }}" method="GET">
                 <input type="text" name="search_title" class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:border-blue-600" placeholder="Rechercher par titre">
                 <button type="submit" class="px-3 py-1 text-white bg-yellow-300 rounded ml-2">Rechercher</button>
             </form>
@@ -118,7 +118,7 @@
                 </div>
                 <span class="block mt-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">{{ $event->date }}</span>
                 <p class="mt-5 text-2xl font-semibold">
-                    <a href="#" title="" >{{ $event->name }}</a>
+                    <a href="#" title="">{{ $event->name }}</a>
                 </p>
                 <p class="mt-4 text-base text-gray-600">{{ $event->description }}</p>
                 <a href="{{ route('event.show', ['id' => $event->id]) }}" title="" class="inline-flex items-center justify-center pb-0.5 mt-5 text-base font-semibold text-blue-600 transition-all duration-200 border-b-2 border-transparent hover:border-blue-600 focus:border-blue-600">

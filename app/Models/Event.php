@@ -18,7 +18,7 @@ class Event extends Model
         'places_availables',
         'category_id',
         'status',
-         'mode',
+         'modee',
        
     ];
 

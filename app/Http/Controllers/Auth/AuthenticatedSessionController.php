@@ -17,6 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+
         return view('auth.login');
     }
 
@@ -34,13 +35,13 @@ class AuthenticatedSessionController extends Controller
         if ($userRole === 'Admin') {
             return redirect()->route('dashboardevent');
         } elseif ($userRole === 'Organizer') {
-            return redirect()->route('dashboard'); 
+            return redirect()->route('dashboard');
         } elseif ($userRole === 'Client') {
             return redirect()->route('/');
         } else {
             return redirect(RouteServiceProvider::HOME);
         }
-    }    
+    }
 
     /**
      * Destroy an authenticated session.

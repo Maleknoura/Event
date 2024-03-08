@@ -13,7 +13,6 @@ class categoryController extends Controller
      */
     public function index()
     {
-       
     }
 
     /**
@@ -58,18 +57,16 @@ class categoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $category = Category::findOrFail($id);
 
-        $validate = $request->validate([
-            'categoryname' => 'required'
-        ]);
+
 
         $category->update([
-            'name' => $validate['categoryname']
+            'name' => ['categoryname']
         ]);
-
+dd($category);
         return redirect()->back();
     }
 

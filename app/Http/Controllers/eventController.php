@@ -26,6 +26,7 @@ class eventController extends Controller
         $categories = Category::all();
         $categoryId = $request->input('id');
 
+
         $query = Event::query();
 
         if ($categoryId) {
@@ -47,38 +48,38 @@ class eventController extends Controller
      */
     public function create(Request $request)
     {
-        try {
-
-            $user = auth()->user();
-            Event::create([
-                'name' => $request->name,
-                'localisation' => $request->localisation,
-                'date' => now()->toDateString(),
-                'description' =>  $request->description,
-                'place_available' => $request->place_available,
-                'mode' => $request->mode,
-                'user_id' => $user->id,
-                'categorie_id' => $request->categorieID,
-            ]);
-            return redirect()->back();
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
 
 
+        $user = auth()->user();
 
+        Event::create([
+            'name' => $request->name,
+            'localisation' => $request->localisation,
+            'date' => now()->toDateString(),
+            'description' =>  $request->description,
+            'place_available' => $request->place_available,
+            'mode' => $request->mode,
+            'client_id' => $user->id,
+            'categorie_id' => $request->categorieID,
+
+        ]);
         return redirect()->back();
     }
 
+
+
+
+
+
     public function show($id)
     {
-        $event = Event::findOrFail($id); 
+        $event = Event::findOrFail($id);
         return view('singlepage', ['event' => $event]);
     }
     /**
      * Display the specified resource.
      */
-  
+
 
     /**
      * Show the form for editing the specified resource.

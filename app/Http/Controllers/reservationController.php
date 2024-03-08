@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 class reservationController extends Controller
@@ -11,7 +13,7 @@ class reservationController extends Controller
      */
     public function index()
     {
-        //
+        return view('singlepage');
     }
 
     /**
@@ -25,9 +27,17 @@ class reservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($eventId, $clientId)
     {
-        //
+
+        $event = Event::findOrFail($eventId);
+
+        Reservation::create([
+            'status' => 'Booked',
+            'event_id' => $event->id,
+            'client_id' => $clientId,
+
+        ]);
     }
 
     /**
