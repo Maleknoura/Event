@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
 
@@ -73,7 +75,7 @@
                         <h3 class="font-semibold text-base text-gray-900 dark:text-gray-50">Evenements</h3>
                     </div>
                     <div class="relative w-full max-w-full flex-grow flex-1 text-right">
-                        <button id="ajouterCategorieBtn" class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                        <button id="openPopupButton" class="bg-blue-500 dark:bg-gray-100 text-white active:bg-blue-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                             New Event
                         </button>
                     </div>
@@ -113,6 +115,77 @@
             </tbody>
             </table>
         </div>
+        <div id="eventPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <div class="bg-white p-2 rounded shadow-md">
+                <form action="{{route('store.organiser')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-1">
+                        <label for="event_name" class="block ">Nom de l'événement:</label>
+                        <input type="text" id="name" name="name" required class="w-full border p-2">
+                    </div>
+                    <div>
+                        <input type="hidden" name="organiser_id" value="{{$organizerId}}">
+                    </div>
+                    <div class="mb-1">
+                        <label for="event_name" class="block ">Description :</label>
+                        <input type="text" id="description" name="description" required class="w-full border p-2">
+                    </div>
+
+                    <div class="mb-1">
+                        <label for="localisation" class="block ">Localisation:</label>
+                        <input type="text" id="localisation" name="localisation" class="w-full border p-2">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="place_available" class="block ">Nombre de places disponibles:</label>
+                        <input type="number" id="place_available" name="place_available" class="w-full border p-2">
+                    </div>
+
+                    <div class="mb-1">
+                        <label for="image" class="block ">Image:</label>
+                        <input type="file" id="image" name="image" class="w-full border p-2">
+                    </div>
+
+                    <div class="mb-1">
+                        <label for="date" class="block ">Date:</label>
+                        <input type="date" id="date" name="date" class="w-full border p-2">
+                    </div>
+
+
+                    <div class="mb-1">
+                        <label for="category" class="block ">Catégorie :</label>
+                        <select id="categorie_id" name="categorie_id" class="w-full border p-2">
+                            @foreach (\App\Models\Category::all() as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-1">
+                        <label for="mode" class="block ">Mode:</label>
+                        <input type="text" id="mode" name="mode" class="w-full border p-2">
+                    </div>
+                    <div class="flex justify-between">
+                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            Ajouter
+                        </button>
+                        <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="closePopup()">
+                            Fermer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            function openPopup() {
+                document.getElementById('eventPopup').classList.remove('hidden');
+            }
+
+            function closePopup() {
+                document.getElementById('eventPopup').classList.add('hidden');
+            }
+
+            document.getElementById('openPopupButton').addEventListener('click', openPopup);
+        </script>
 </body>
 
 </html>

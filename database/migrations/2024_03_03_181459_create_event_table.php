@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('image');
             $table->date('date');
             $table->integer('place_available');
-            $table->enum('statut', ['Pending', 'Booked', 'No Reserved'])->default('No Reserved');
-;
+            $table->enum('statut', ['Pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('mode',['automatique','manuelle']);
+
 
             $table->timestamps();
         }); 

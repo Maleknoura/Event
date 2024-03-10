@@ -7,24 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    
+
     use HasFactory;
     protected $fillable = [
         'id',
         'name',
         'description',
+        'localisation',
         'image',
         'date',
-        'places_availables',
-        'category_id',
-        'status',
-         'modee',
-       
+        'place_available',
+        'categorie_id',
+        'statut',
+        'mode',
+        'organiser_id'
+
+
     ];
 
     public function category()
     {
-        return $this->belongsTo(category::class,'categorie_id');
+        return $this->belongsTo(category::class, 'categorie_id');
     }
 
     public function reservation()

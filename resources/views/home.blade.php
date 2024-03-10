@@ -108,7 +108,7 @@
             <div class="p-5">
                 <div class="relative">
                     <a href="#" title="" class="block aspect-w-4 aspect-h-3">
-                        <img class="object-cover w-full h-full" src="https://cdn.rareblocks.xyz/collection/celebration/images/blog/2/blog-post-1.jpg" alt="" />
+                        <img class="object-cover w-full h-full" src="{{ url('storage/images/' . $event->image) }}" alt="" />
                     </a>
 
 

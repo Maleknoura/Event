@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\eventrequest;
 use App\Models\category;
 use App\Models\Event;
+use App\Models\Organiser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class eventController extends Controller
@@ -15,9 +17,11 @@ class eventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
-
-        return view('dashboardevent', compact('events'));
+        $organizerQuery = Organiser::where('user_id', Auth::id());
+        $organizer = $organizerQuery->first();
+        $organizerId = $organizer ? $organizer->id : null;
+        $events = Event::where('organiser_id', $organizerId)->with('organizer')->get();
+        return view('dashboardevent', compact('events', 'organizerId'));
     }
 
 
@@ -48,25 +52,31 @@ class eventController extends Controller
      */
     public function create(Request $request)
     {
-
-
-        $user = auth()->user();
-
-        Event::create([
-            'name' => $request->name,
-            'localisation' => $request->localisation,
-            'date' => now()->toDateString(),
-            'description' =>  $request->description,
-            'place_available' => $request->place_available,
-            'mode' => $request->mode,
-            'client_id' => $user->id,
-            'categorie_id' => $request->categorieID,
-
-        ]);
-        return redirect()->back();
     }
 
+    public function store(eventrequest $request)
+    {
+        // dd($request);
+        $validatedData = $request->validate($request->rules());
+        $user = Organiser::where('user_id', Auth::id())->first();
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('/public/images', $imageName);
 
+
+        Event::create([
+            'name' => $validatedData['name'],
+            'localisation' => $validatedData['localisation'],
+            'date' => $validatedData['date'],
+            'description' =>  $validatedData['description'],
+            'place_available' => $validatedData['place_available'],
+            'mode' => $validatedData['mode'],
+            'organiser_id' => $user->id,
+            'categorie_id' => $validatedData['categorie_id'],
+            'image' => $imageName,
+        ]);
+        return redirect()->back()->with('Success', 'Events SuccessFully Added');
+    }
 
 
 

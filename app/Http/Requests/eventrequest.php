@@ -25,9 +25,10 @@ class eventrequest extends FormRequest
             'name' => 'required|string|max:255',
             'localisation' => 'required|string|max:255',
             'description' => 'required|string|max:455',
-            'image' => 'required|string|max:255',
             'date' => 'required',
-            'place_available' => 'required'
+            'place_available' => 'required',
+            'mode'=>'required',
+            'categorie_id'=> 'required',
         ];
     }
 }

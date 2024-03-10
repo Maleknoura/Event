@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/dashboard/createcategory', [categoryController::class, 'create'])->name('create.category');
 Route::post('/dashboard/storecategory', [categoryController::class, 'store'])->name('store.category');
 Route::get('/dashboard/{id}/editcategory', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::put('/dashboard/editcategory{id}', [categoryController::class, 'update'])->name('update.category');
+Route::put('/dashboard/{id}/editcategory/update', [categoryController::class, 'update'])->name('update.category');
 Route::delete('/dashboard/deletecategory/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
@@ -38,7 +38,9 @@ Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])-
 // dashboard organiser
 Route::get('/dashboardorganiser', [eventController::class, 'index']);
 Route::delete('/dashboardorganiser/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
-Route::post('/dashboardorganiser/create', [eventController::class, 'create'])->name('create.organiser');
+// Route::get('/dashboardorganiser/create', [eventController::class, 'create'])->name('create.organiser');
+Route::post('/dashboardorganiser/store', [eventController::class, 'store'])->name('store.organiser');
+
 
 
 

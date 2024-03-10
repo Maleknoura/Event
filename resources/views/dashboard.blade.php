@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
     <title>Document</title>
+
 </head>
 
 <body>
@@ -92,7 +96,8 @@
                                 <tr class="text-gray-700 dark:text-gray-100">
                                     <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">{{ $category->name }}</th>
                                     <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                        <button id="editerCategorieBtn" class="bg-gray-400 dark:bg-gray-100 text-white active:bg-green-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                                        <!-- Modal toggle -->
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                             Modifier
                                         </button>
 
@@ -168,8 +173,6 @@
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Event</th>
-                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Organiser</th>
-                    <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Catégorie</th>
 
                     <th class="py-2 px-4 border-b border-gray-300 text-xs uppercase font-semibold text-left">Action</th>
                 </tr>
@@ -178,8 +181,7 @@
                 @foreach($event as $events)
                 <tr class="text-gray-700 dark:text-gray-100">
                     <td class="py-2 px-4 border-b border-gray-300"> {{ $events->name }}</td>
-                    <td class="py-2 px-4 border-b border-gray-300"> test</td>
-                    <td class="py-2 px-4 border-b border-gray-300">test</td>
+                    </td>
 
                     <td class="py-2 px-4 border-b border-gray-200">
                         <button class="bg-green-400  text-white  text-xs py-1 px-2 rounded">
@@ -198,13 +200,60 @@
 
 
 
+
+
+    <!-- Main modal -->
+    <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <input type="hidden" name="category_id" value="{{ $category->id }}">
+
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        Modifier Categorie
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5" method="post" action="{{ route('update.category', ['id' => $category->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <input type="text" name="categoryname" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                        </div>
+
+
+                    </div>
+
+
+                    <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        modifier
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <div id="popupAjoutCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
         <div class="backdrop-filter backdrop-blur-sm"></div>
         <div class="bg-white p-8 rounded shadow-md">
             <h2 class="text-2xl font-bold mb-4">Ajouter une catégorie</h2>
 
 
-            <form action="{{ route('store') }}" method="post">
+            <form action="{{ route('store.category') }}" method="post">
                 @csrf
                 <label for="nomCategorie" class="block text-sm font-medium text-gray-700">Nom de la catégorie:</label>
                 <input type="text" id="nomCategorie" name="name" class="mt-1 p-2 border rounded-md ">
@@ -220,29 +269,30 @@
             </button>
         </div>
     </div>
-    <div id="popupEditCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+
+    <!-- <div id="popupEditCategorie" class="fixed bg-gray-700 bg-opacity-50 hidden top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
         <div class="backdrop-filter backdrop-blur-sm"></div>
         <div class="bg-white p-8 rounded shadow-md">
             <h2 class="text-2xl font-bold mb-4">Modifier une catégorie</h2>
 
-            <form action="{{ route('update', ['id' => $category->id]) }}" method="post">
+
+            <form action="{{ route('update.category', ['id' => $category->id]) }}" method="post">
                 @csrf
-                @method('PUT') 
+                @method('PUT')
+                <label for="nomCategorie" class="block text-sm font-medium text-gray-700">Nom de la catégorie:</label>
+                <input type="text" id="nomCategorie" name="categoryname" class="mt-1 p-2 border rounded-md ">
 
-                <label for="nomCategorieEdit" class="block text-sm font-medium text-gray-700">Nouveau nom de la catégorie:</label>
-                <input type="text" id="nomCategorieEdit" name="categoryname" class="mt-1 p-2 border rounded-md">
 
-                <button onclick="openUpdatePopup('{{ $category->id }}', '{{ $category->name }}')" class="bg-gray-400 dark:bg-gray-100 text-white active:bg-green-600 dark:text-gray-800 dark:active:text-gray-700 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
-                Modifier
-            </button>
+                <button type="submit" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Ajouter
+                </button>
             </form>
 
-            <button id="fermerPopupEditBtn" class="mt-4 text-sm text-gray-600 hover:text-gray-800">
+            <button id="closePopupBtn" class="mt-4 text-sm text-gray-600 hover:text-gray-800">
                 Fermer
             </button>
         </div>
-    </div>
-
+    </div> -->
 
 
     <script>
@@ -258,6 +308,7 @@
             popupAjoutCategorie.classList.add('hidden');
         });
     </script>
+
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
     <script>
         const setup = () => {
@@ -282,34 +333,7 @@
             }
         }
     </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Fonction pour ouvrir le popup de mise à jour
-        function openUpdatePopup(categoryId, categoryname) {
-            // Récupérer le formulaire de mise à jour
-            let updateForm = document.getElementById('updateForm');
 
-            // Pré-remplir les champs avec les données actuelles
-            updateForm.elements['category_id'].value = categoryId;
-            updateForm.elements['categoryname'].value = categoryname;
-
-            // Afficher le popup de mise à jour
-            document.getElementById('popupEditCategorie').classList.remove('hidden');
-        }
-
-        // Ajouter cet événement sur les boutons de modification
-        document.querySelectorAll('#editerCategorieBtn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                // Récupérer les données de la ligne de catégorie associée
-                let categoryId = btn.getAttribute('data-category-id');
-                let categoryname = btn.getAttribute('data-category-name');
-
-                // Appeler la fonction pour ouvrir le popup de mise à jour
-                openUpdatePopup(categoryId, categoryname);
-            });
-        });
-    });
-</script>
 
 
 </body>
