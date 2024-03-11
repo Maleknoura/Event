@@ -20,13 +20,16 @@ class eventController extends Controller
         $organizerQuery = Organiser::where('user_id', Auth::id());
         $organizer = $organizerQuery->first();
         $organizerId = $organizer ? $organizer->id : null;
+        $eventsCount = Event::where('organiser_id', $organizerId)->count();
+
         $events = Event::where('organiser_id', $organizerId)->with('organizer')->get();
-        return view('dashboardevent', compact('events', 'organizerId'));
+        return view('dashboardevent', compact('events', 'organizerId', 'eventsCount'));
     }
 
 
     public function view(Request $request)
     {
+
         $categories = Category::all();
         $categoryId = $request->input('id');
 
@@ -106,30 +109,29 @@ class eventController extends Controller
 
     public function update(Request $request, Event $id)
     {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->move(public_path('public/images'), $imageName);
-        } else {
-            $imageName = null;
-        }
-
+        // dd($request);
         $request->validate([
             'eventname' => 'required',
             'eventlocalisation' => 'required',
-            'eventdiscription' => 'required',
-            'eventimage' => $imageName,
+            'eventdescription' => 'required',
+            'categorie' => 'required',
+            'eventimage' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'eventdate' => 'required',
-            'eventplace_available' => 'required'
+            'eventplace_available' => 'required',
         ]);
+
+        $image = $request->file('eventimage');
+        $imageName = time() . '.' . $image->extension();
+        $image->storeAs('public/images', $imageName);
 
         $id->update([
             'name' => $request->eventname,
             'localisation' => $request->eventlocalisation,
-            'description' => $request->eventdiscription,
+            'description' => $request->eventdescription,
             'image' => $imageName,
+            'categorie_id' => $request->categorie,
             'date' => $request->eventdate,
-            'place_available' => $request->eventcapacity
+            'place_available' => $request->eventplace_available,
         ]);
 
         return redirect()->back();

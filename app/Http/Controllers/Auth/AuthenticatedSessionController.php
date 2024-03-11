@@ -33,11 +33,11 @@ class AuthenticatedSessionController extends Controller
         $userRole = Auth::user()->role;
 
         if ($userRole === 'Admin') {
-            return redirect()->route('dashboardevent');
+            return redirect()->route('statistiques');
         } elseif ($userRole === 'Organizer') {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboardorganiser');
         } elseif ($userRole === 'Client') {
-            return redirect()->route('/');
+            return redirect()->route('home');
         } else {
             return redirect(RouteServiceProvider::HOME);
         }
@@ -54,6 +54,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

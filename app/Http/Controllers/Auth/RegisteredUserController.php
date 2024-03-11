@@ -59,10 +59,10 @@ class RegisteredUserController extends Controller
 
         if ($user->role == 'Client') {
             Auth::login($user);
-            return redirect('home');
+            return redirect('/');
         } elseif ($user->role == 'Organizer') {
             Auth::login($user);
-            return redirect('/organizer');
+            return redirect('/dashboardorganiser');
         } elseif ($user->role == 'Admin') {
             Auth::login($user);
             return redirect('/dashboard');

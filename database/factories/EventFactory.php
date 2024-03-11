@@ -21,12 +21,12 @@ class EventFactory extends Factory
         return [
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'image' => 'path/to/your/image.jpg',
+            'image' => $this->faker->imageUrl(),
             'date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
             'place_available' => $this->faker->numberBetween(10, 100),
             'categorie_id' => $this->faker->numberBetween(1, 2),
-            'localisation' => $this->faker->paragraph, // Change this based on your category IDs
-             // Change this based on your category IDs
+            'localisation' => $this->faker->paragraph, 
+             
         ];
     }
 }
