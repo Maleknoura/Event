@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\client;
 use App\Models\Event;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class reservationController extends Controller
 {
@@ -27,25 +29,44 @@ class reservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($eventId, $clientId)
+    public function store($eventId)
     {
 
         $event = Event::findOrFail($eventId);
+        $client = client::where('user_id', Auth::id())->first();
+        if ($event->mode === 'automatique' && $event->place_available > 0) {
 
-        Reservation::create([
-            'status' => 'Booked',
-            'event_id' => $event->id,
-            'client_id' => $clientId,
+            Reservation::create([
+                'status' => 'Booked',
+                'event_id' => $event->id,
+                'client_id' => $client->id,
 
-        ]);
+            ]);
+        } else {
+            if ($event->mode === 'manuelle' && $event->place_available > 0) {
+                // dd($eventId);
+                Reservation::create([
+                    'status' => 'Available',
+                    'event_id' => $event->id,
+                    'client_id' => $client->id,
+                ]);
+            }
+        }
+        return redirect()->back();
     }
-
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+
+
+        $user = Auth::user()->id;
+        $idClient = Client::where('user_id', $user)->first();
+        $reservations = Reservation::with('client.user', 'events.organizer')->where('status', 'Booked')
+            ->where('client_id', $idClient->id)
+            ->get();
+        return view('ticket',compact('reservations'));
     }
 
     /**
@@ -59,10 +80,8 @@ class reservationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+
+
 
     /**
      * Remove the specified resource from storage.

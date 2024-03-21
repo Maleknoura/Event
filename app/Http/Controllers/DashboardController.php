@@ -6,6 +6,7 @@ use App\Models\category;
 use App\Models\client;
 use App\Models\Event;
 use App\Models\Organiser;
+use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -23,17 +24,18 @@ class DashboardController extends Controller
         $eventsCount = Event::count();
         $cat = category::all();
         $users = User::all();
-        $event = Event::all();
-        return view('dashboard', compact('categoriesCount', 'clientsCount', 'organizersCount', 'eventsCount', 'cat', 'users','event'));
+        $event = Event::where('statut', 'pending')->get();
+        
+        return view('dashboard', compact('categoriesCount', 'clientsCount', 'organizersCount', 'eventsCount', 'cat', 'users', 'event'));
     }
 
     public function validateEvent(Event $event)
     {
         $event->update(['status' => true]);
-    
+
         return redirect()->back()->with('success', 'Event validated successfully.');
     }
-   
+
 
     public function toggleStatus(Request $request, User $user)
     {
@@ -51,8 +53,25 @@ class DashboardController extends Controller
         return back()->with('success', 'User status updated successfully.');
     }
 
+    public function publication(Request $request, $eventId)
+    {
+        // dd($request);
+        $event = Event::findOrFail($eventId);
+        $event->update([
+            'statut' => $request->statut,
+        ]);
 
-
+        return redirect()->back();
+    }
+    public function rejectEvent(Request $request,$id)
+{
+     dd($request);
+    $event = Event::findOrFail($id);
+    $event->update([
+        'statut' => $request->statut,
+    ]);
+    return redirect()->back()->with('success', 'Event rejected successfully.');
+}
 
     /**
      * Show the form for creating a new resource.

@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-
+            
+            $table->foreignId('client_id')->nullable()->constrained('clients');
             $table->foreignId('event_id')
-                ->nullable()
-                ->constrained('events') // Assurez-vous que le nom de la table est correct, ici "events"
-                ->onDelete('set null');
+            ->nullable()
+            ->constrained('events') // Assurez-vous que le nom de la table est correct, ici "events"
+            ->onDelete('set null');
+            
         });
     }
 
@@ -26,8 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-
-
+            //
         });
     }
 };

@@ -31,13 +31,25 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $userRole = Auth::user()->role;
+        $userstatus = Auth::user()->status;
 
         if ($userRole === 'Admin') {
+        
             return redirect()->route('statistiques');
         } elseif ($userRole === 'Organizer') {
+            if($userstatus){
+                Auth::logout();
+                return redirect('/login')->with('Error' , 'You Cant Login  You are Banned');
+            }else{
             return redirect()->route('dashboardorganiser');
+            }
         } elseif ($userRole === 'Client') {
+            if($userstatus){
+                Auth::logout();
+                return redirect('/login')->with('Error' , 'You Cant Login  You are Banned');
+            }else{
             return redirect()->route('home');
+        }
         } else {
             return redirect(RouteServiceProvider::HOME);
         }

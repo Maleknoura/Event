@@ -28,34 +28,37 @@ use Illuminate\Support\Facades\Route;
 // dashboardadmin
 Route::middleware(['auth', CheckRole::class . ':Admin'])->group(function () {
 
-Route::get('/dashboard/createcategory', [categoryController::class, 'create'])->name('create.category');
-Route::post('/dashboard/storecategory', [categoryController::class, 'store'])->name('store.category');
-Route::get('/dashboard/{id}/editcategory', [CategoryController::class, 'edit'])->name('categories.edit');
-Route::put('/dashboard/{id}/editcategory/update', [categoryController::class, 'update'])->name('update.category');
-Route::delete('/dashboard/deletecategory/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
+    Route::get('/dashboard/createcategory', [categoryController::class, 'create'])->name('create.category');
+    Route::post('/dashboard/storecategory', [categoryController::class, 'store'])->name('store.category');
+    // Route::get('/dashboard/{id}/editcategory', [CategoryController::class, 'edit'])->name('categories.edit');
+    Route::put('/dashboard/editcategory/update/{id}', [categoryController::class, 'update'])->name('updatecategory');
+    Route::delete('/dashboard/deletecategory/{id}', [categoryController::class, 'destroy'])->name('destroycategory');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
-Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('statistiques');
+    Route::put('/dashboard/{id}', [DashboardController::class, 'publication'])->name('validateev');
+
+    Route::patch('/dashboard/{user}', [DashboardController::class, 'toggleStatus'])->name('users.update');
 });
 
 // dashboard organiser
 Route::middleware(['auth', CheckRole::class . ':Organizer'])->group(function () {
-Route::get('/dashboardorganiser', [eventController::class, 'index'])->name('dashboardorganiser');
-Route::delete('/dashboardorganiser/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
-// Route::get('/dashboardorganiser/create', [eventController::class, 'create'])->name('create.organiser');
-Route::post('/dashboardorganiser/store', [eventController::class, 'store'])->name('store.organiser');
-Route::post('/dashboardorganiser/update/{id}' , [eventController::class , 'update'])->name('update.event');
-
+    Route::get('/dashboardorganiser', [eventController::class, 'index'])->name('dashboardorganiser');
+    Route::delete('/dashboardorganiser/delete/{id}', [eventController::class, 'destroy'])->name('destroy.event');
+    // Route::get('/dashboardorganiser/create', [eventController::class, 'create'])->name('create.organiser');
+    Route::post('/dashboardorganiser/store', [eventController::class, 'store'])->name('store.organiser');
+    Route::post('/dashboardorganiser/update/{id}', [eventController::class, 'update'])->name('update.event');
+    Route::put('/dashboardorganiser/event/{id}', [eventController::class, 'updatereservation'])->name('accepterReservation');
+    Route::put('/dashboardorganiser/event/reject/{id}', [eventController::class, 'rejectEven'])->name('rejectev');
 });
 
 
 // home
 Route::middleware(['auth', CheckRole::class . ':Client'])->group(function () {
-Route::get('/', [eventController::class, 'view'])->name("home");
-Route::get('/search', [eventController::class, 'view'])->name('home.search');
-Route::get('/events/{id}', [eventController::class, 'show'])->name('event.show');
-Route::post('/events/{id}/store/{clientId}', [ReservationController::class, 'store'])->name('reservation.store');
-
+    Route::get('/', [eventController::class, 'view'])->name("home");
+    Route::get('/search', [eventController::class, 'view'])->name('home.search');
+    Route::get('/events/{id}', [eventController::class, 'show'])->name('event.show');
+    Route::post('/events/{id}/store/{clientId}', [ReservationController::class, 'store'])->name('reservation.store');
+    Route::get('/ticket', [reservationController::class, 'show'])->name('ticket');
 });
 
 

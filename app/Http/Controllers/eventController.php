@@ -6,8 +6,10 @@ use App\Http\Requests\eventrequest;
 use App\Models\category;
 use App\Models\Event;
 use App\Models\Organiser;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 class eventController extends Controller
@@ -22,8 +24,17 @@ class eventController extends Controller
         $organizerId = $organizer ? $organizer->id : null;
         $eventsCount = Event::where('organiser_id', $organizerId)->count();
 
+        $eventWithMostReservations = Event::select('events.id', 'events.name', DB::raw('COUNT(reservations.id) as reservations_count'))
+            ->leftJoin('reservations', 'events.id', '=', 'reservations.event_id')
+            ->where('events.organiser_id', $organizerId)
+            ->groupBy('events.id', 'events.name')
+            ->orderByDesc('reservations_count')
+            ->first();
+
         $events = Event::where('organiser_id', $organizerId)->with('organizer')->get();
-        return view('dashboardevent', compact('events', 'organizerId', 'eventsCount'));
+        $reservations = Reservation::where('status', '!=', 'Booked')->get();
+
+        return view('dashboardevent', compact('events', 'organizerId', 'eventsCount', 'eventWithMostReservations', 'reservations'));
     }
 
 
@@ -32,7 +43,6 @@ class eventController extends Controller
 
         $categories = Category::all();
         $categoryId = $request->input('id');
-
 
         $query = Event::query();
 
@@ -43,8 +53,10 @@ class eventController extends Controller
         if ($searchTitle) {
             $query->where('name', 'like', '%' . $searchTitle . '%');
         }
+        $query->where('statut', 'accepted');
 
         $events = $query->with('category')->paginate(4);
+       
 
 
         return view('home', compact('events', 'categories'));
@@ -81,7 +93,16 @@ class eventController extends Controller
         return redirect()->back()->with('Success', 'Events SuccessFully Added');
     }
 
+    public function publication(Request $request, $eventId)
+    {
+        dd($request);
+        $event = Event::findOrFail($eventId);
+        $event->update([
+            'statut' => $request->statut,
+        ]);
 
+        return redirect()->back();
+    }
 
 
     public function show($id)
@@ -138,6 +159,15 @@ class eventController extends Controller
     }
 
 
+    public function updatereservation(Request $request,  $id)
+    {
+
+        $reservation = Reservation::findOrFail($id);
+        $reservation->update([
+            'status' => $request->status,
+        ]);
+        return redirect()->back();
+    }
 
     /**
      * Remove the specified resource from storage.

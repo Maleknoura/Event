@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
-            $table->id();
-            $table->enum('status', ['Booked', 'Available'])->default('Available');
-            $table->timestamps();
+        Schema::table('reservations', function (Blueprint $table) {
+          $table->foreignId('client_id')->nullable()->constrained('clients');
+            
         });
     }
 
@@ -23,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::table('reservations', function (Blueprint $table) {
+            //
+        });
     }
 };
